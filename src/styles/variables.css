@@ -1,0 +1,83 @@
+/* ====================================
+   MIGAS CASH FLOW CALCULATOR
+   CSS Design System — Professional Theme
+   ==================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* === Page Background === */
+  --bg-page: #F8F9FC;
+  --bg-primary: #F8F9FC;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-input: #F3F4F6;
+
+  /* === Professional Primary (Deep Blue) === */
+  --accent-primary: #1A56DB;
+  --accent-primary-hover: #1648c0;
+  --accent-primary-light: rgba(26, 86, 219, 0.08);
+  --accent-primary-glow: rgba(26, 86, 219, 0.15);
+
+  /* === Secondary / CTA highlight (Pink kept as accent) === */
+  --accent-secondary: #0D9B6C;
+  --accent-secondary-light: rgba(13, 155, 108, 0.08);
+  --accent-cta: #E8245E;
+
+  /* === Text === */
+  --text-primary: #111928;
+  --text-secondary: #4B5563;
+  --text-muted: #9CA3AF;
+  --text-light: #ffffff;
+  --text-section-title: #6B7280;
+
+  /* === Status Colors === */
+  --positive: #059669;
+  --positive-light: rgba(5, 150, 105, 0.1);
+  --negative: #DC2626;
+  --negative-light: rgba(220, 38, 38, 0.1);
+  --warning: #D97706;
+  --warning-light: rgba(217, 119, 6, 0.1);
+
+  /* === Borders === */
+  --border: #E5E7EB;
+  --border-focus: #1A56DB;
+  --border-thick: 1.5px solid var(--border);
+  --border-thin: 1px solid var(--border);
+
+  /* === Typography === */
+  --font-display: 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-ui: 'Inter', sans-serif;
+  --font-mono: 'Inter', monospace;
+
+  /* === Spacing (8px scale) === */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* === Radius (Rounded but professional) === */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* === Transitions === */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* === Shadows === */
+  --shadow-xs: 0px 1px 3px rgba(17, 25, 40, 0.06);
+  --shadow-sm: 0px 2px 8px rgba(17, 25, 40, 0.08);
+  --shadow-md: 0px 4px 16px rgba(17, 25, 40, 0.10);
+  --shadow-lg: 0px 8px 24px rgba(17, 25, 40, 0.12);
+  --shadow-brutal: 0px 2px 8px rgba(17, 25, 40, 0.08);
+  --shadow-brutal-lg: 0px 4px 16px rgba(17, 25, 40, 0.10);
+  --shadow-brutal-hover: 0px 6px 20px rgba(26, 86, 219, 0.15);
+}
