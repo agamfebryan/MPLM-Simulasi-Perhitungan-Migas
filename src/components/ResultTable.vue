@@ -2,9 +2,20 @@
   <div class="result-table-wrap fade-in">
     <div class="table-header-bar">
       <h2 class="section-title">TABEL ARUS KAS DETAIL (NCF)</h2>
-      <button id="btn-copy-table" class="btn btn-ghost btn-sm" @click="copyTable" :class="{ copied }">
-        {{ copied ? '[ DATA TERSALIN ]' : '[ SALIN KE EXCEL ]' }}
-      </button>
+      <div class="table-actions">
+        <button id="btn-download-excel" class="btn btn-excel" @click="downloadExcel" :class="{ downloading }">
+          <svg v-if="!downloading" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <svg v-else width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="spin">
+            <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" opacity=".3"/>
+            <path d="M21 12a9 9 0 00-9-9"/>
+          </svg>
+          {{ downloading ? 'Menyiapkan...' : 'Download Excel' }}
+        </button>
+      </div>
     </div>
     <div class="table-scroll">
       <table class="data-table" id="ncf-table">
@@ -68,11 +79,16 @@
 
 <script setup>
 import { computed, ref } from 'vue'
+import { exportToExcel } from '../composables/useExcelExport.js'
+
 const props = defineProps({
-  rows: { type: Array, default: () => [] },
+  rows:         { type: Array,  default: () => [] },
+  indicators:   { type: Object, default: () => ({}) },
+  inputData:    { type: Object, default: () => ({}) },
+  discountRate: { type: Number, default: 10 },
 })
 
-const copied = ref(false)
+const downloading = ref(false)
 
 const sumNonNull = (key) => props.rows.reduce((a, r) => a + (r[key] !== null ? r[key] : 0), 0)
 
@@ -102,18 +118,16 @@ function colorClass(val, isExpense = false) {
   return val >= 0 ? 'val-positive' : 'val-negative'
 }
 
-async function copyTable() {
-  const table = document.getElementById('ncf-table')
-  if (!table) return
-  const rows = [...table.querySelectorAll('tr')]
-  const text = rows.map(r =>
-    [...r.querySelectorAll('th, td')].map(c => c.textContent.trim()).join('\t')
-  ).join('\n')
+async function downloadExcel() {
+  if (downloading.value) return
+  downloading.value = true
+  // Sedikit delay agar animasi loading terlihat
+  await new Promise(r => setTimeout(r, 300))
   try {
-    await navigator.clipboard.writeText(text)
-    copied.value = true
-    setTimeout(() => (copied.value = false), 2000)
-  } catch {}
+    exportToExcel(props.rows, props.indicators, props.inputData, props.discountRate)
+  } finally {
+    downloading.value = false
+  }
 }
 </script>
 
@@ -155,9 +169,42 @@ async function copyTable() {
 .row-zero td { background: rgba(244, 63, 94, 0.05) !important; }
 .row-negative td { background: rgba(244, 63, 94, 0.02) !important; }
 
-.copied {
-  color: var(--positive) !important;
-  border-color: var(--positive) !important;
-  background: var(--positive-bg);
+/* ── Status: copied ── */
+
+/* ── Button group di header tabel ── */
+.table-actions {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+/* ── Download Excel button ── */
+.btn-excel {
+  background: var(--accent-secondary);
+  color: #fff;
+  border: 1px solid transparent;
+  box-shadow: 0 1px 4px rgba(13, 155, 108, 0.20);
+  transition: all var(--transition-fast);
+}
+
+.btn-excel:hover:not(:disabled) {
+  background: #0b8a5e;
+  box-shadow: 0 3px 10px rgba(13, 155, 108, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-excel:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-excel.downloading {
+  opacity: 0.75;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ── Spin animation (pakai yang sudah ada di main.css) ── */
+.spin {
+  animation: spin 0.8s linear infinite;
 }
 </style>

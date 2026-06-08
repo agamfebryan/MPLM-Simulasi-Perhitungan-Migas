@@ -35,7 +35,12 @@
 
 
         <!-- NCF Table -->
-        <ResultTable :rows="result.tabelNCF" />
+        <ResultTable
+          :rows="result.tabelNCF"
+          :indicators="indicators"
+          :inputData="result.input"
+          :discountRate="discountRate"
+        />
 
         <!-- Charts -->
         <div class="charts-grid">
