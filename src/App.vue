@@ -68,7 +68,6 @@
         <!-- Action -->
         <div class="hasil-actions">
           <button class="btn btn-ghost" @click="switchTab('input')">← Ubah Input</button>
-          <button class="btn btn-secondary" @click="triggerSave">Simpan Skenario</button>
         </div>
       </div>
     </main>
@@ -107,29 +106,7 @@
       </div>
     </main>
 
-    <!-- Save Dialog from Hasil tab -->
-    <div v-if="showSaveFromHasil" class="modal-overlay" @click.self="showSaveFromHasil = false">
-      <div class="modal-box">
-        <h3 class="modal-title">Simpan Skenario</h3>
-        <div class="form-group">
-          <label class="form-label">Nama Skenario</label>
-          <input
-            id="input-save-hasil"
-            v-model="saveName"
-            type="text"
-            class="form-input"
-            placeholder="cth: Lapangan RISKI - Optimis"
-            @keyup.enter="confirmSaveFromHasil"
-          />
-        </div>
-        <div class="modal-actions">
-          <button class="btn btn-ghost" @click="showSaveFromHasil = false">Batal</button>
-          <button class="btn btn-primary" @click="confirmSaveFromHasil" :disabled="!saveName.trim()">
-            Simpan
-          </button>
-        </div>
-      </div>
-    </div>
+
   </div>
 </template>
 
@@ -150,7 +127,7 @@ import AnalysisPanel from './components/AnalysisPanel.vue'
 import { computeNCF } from './composables/useCalculator.js'
 import { computeDepreciation } from './composables/useDepreciation.js'
 import { computeAllIndicators, computeNPV } from './composables/useIndicators.js'
-import { loadScenarios, saveScenario, deleteScenario } from './composables/useStorage.js'
+import { loadScenarios, deleteScenario } from './composables/useStorage.js'
 
 // ── State ──────────────────────────────────────────────────
 const activeTab     = ref('input')
@@ -161,8 +138,6 @@ const showDepDetail = ref(false)
 const scenarios     = ref(loadScenarios())
 const compareIds    = ref([])
 const showCompare   = ref(false)
-const showSaveFromHasil = ref(false)
-const saveName      = ref('')
 const lastInput     = ref(null)
 
 // ── Computed Indicators (reactive to discountRate) ──────────
@@ -205,28 +180,6 @@ async function handleCalculate(inputData) {
 
 function onRateChange(newRate) {
   discountRate.value = newRate
-}
-
-function triggerSave() {
-  saveName.value = lastInput.value?.nama || ''
-  showSaveFromHasil.value = true
-}
-
-function confirmSaveFromHasil() {
-  if (!saveName.value.trim() || !result.value) return
-  const totalInv = (result.value.input.capital || 0) + (result.value.input.nonCapital || 0)
-  const ind = indicators.value
-  const entry = saveScenario(saveName.value.trim(), result.value.input, {
-    tabelNCF: result.value.tabelNCF,
-    totalNCF: result.value.tabelNCF.reduce((s, r) => s + r.ncf, 0),
-    pot: ind.pot,
-    npv: { rate: discountRate.value, value: ind.npv },
-    ror: ind.ror,
-    pir: ind.pir,
-    dpr: ind.dpr,
-  })
-  scenarios.value = loadScenarios()
-  showSaveFromHasil.value = false
 }
 
 function handleSaved(nama) {

@@ -14,7 +14,7 @@
     <div v-if="scenarios.length === 0" class="empty-state">
       <div class="empty-icon" style="font-family:var(--font-mono);font-weight:900;">NO DATA</div>
       <p class="empty-title">BELUM ADA SKENARIO TERSIMPAN</p>
-      <p class="empty-sub">Isi form input, hitung, lalu klik "Simpan Skenario"</p>
+      <p class="empty-sub">Isi form input dan jalankan simulasi untuk melihat hasil perhitungan</p>
       <button class="btn btn-secondary mt-4" @click="$emit('go-input')">[ KE FORM INPUT ]</button>
     </div>
 
