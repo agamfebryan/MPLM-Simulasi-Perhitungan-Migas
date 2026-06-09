@@ -237,8 +237,13 @@ function doCompare(ids) {
 
 .charts-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-4);
+}
+
+/* Grafik ketiga full width agar tidak terlihat gantung */
+.charts-grid > *:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
 }
 
 .dep-section {
